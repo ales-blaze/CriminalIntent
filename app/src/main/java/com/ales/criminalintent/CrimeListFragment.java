@@ -56,8 +56,9 @@ public class CrimeListFragment extends Fragment {
             if ( resultCode == Activity.RESULT_OK ){
                Crime crime = (Crime) data.getSerializableExtra(CrimeFragment.CRIME_OBJECT);
                int position = data.getIntExtra(CrimeFragment.CRIME_POSITION , -1);
-               CrimeLab crimeLab = new CrimeLab(getContext());
-               crimeLab.updateCrime(position , crime);
+               CrimeLab.get(getActivity()).updateCrime(position , crime);
+//               CrimeLab crimeLab = new CrimeLab(getContext());
+//               CrimeLab.getupdateCrime(position , crime);
             }
         }
     }
@@ -100,7 +101,8 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateUI() {
-        CrimeLab crimeLab = new CrimeLab(getActivity());
+//        CrimeLab crimeLab = new CrimeLab(getActivity());
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
         if(mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);

@@ -17,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.UUID;
 
 //import static com.ales.criminalintent.CrimeActivity.CRIME_ID;
@@ -40,7 +39,6 @@ public class CrimeFragment extends Fragment {
 
     public static CrimeFragment newInstance(UUID uuid) {
         Bundle bundle = new Bundle();
-        b\
         bundle.putSerializable(CRIME_ID , uuid);
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(bundle);
@@ -55,8 +53,7 @@ public class CrimeFragment extends Fragment {
         if ( uuid != null) {
             Log.d("CrimeFragment" , "uuid not null");
         }
-        CrimeLab crim = new CrimeLab(getActivity());
-        mCrime = crim.getCrime(uuid);
+        mCrime = CrimeLab.get(getActivity()).getCrime(uuid);
         if ( mCrime != null) {
             Log.d("CrimeActivity" , "mCrime not null");
         }
@@ -89,8 +86,8 @@ public class CrimeFragment extends Fragment {
             UUID uuid = (UUID) Objects.requireNonNull(getArguments()).getSerializable(CRIME_ID);
             mCrime = CrimeLab.get(getContext()).getCrime(uuid);
         }*/
-        UUID id = (UUID) getArguments().getSerializable(CRIME_ID);
-        mCrime = CrimeLab.get(getContext()).getCrime(id);
+//        UUID id = (UUID) getArguments().getSerializable(CRIME_ID);
+//        mCrime = CrimeLab.get(getContext()).getCrime(id);
         mDateButton.setText(mCrime.getDate().toString());
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mTitleField.setText(mCrime.getTitle());
