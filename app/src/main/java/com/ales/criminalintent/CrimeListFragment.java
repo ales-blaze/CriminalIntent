@@ -44,7 +44,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimeActivity.newIntent(getActivity() , mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity() , mCrime.getId());
             startActivityForResult(intent ,REQUEST_CRIME_CODE );
         }
     }
@@ -57,8 +57,6 @@ public class CrimeListFragment extends Fragment {
                Crime crime = (Crime) data.getSerializableExtra(CrimeFragment.CRIME_OBJECT);
                int position = data.getIntExtra(CrimeFragment.CRIME_POSITION , -1);
                CrimeLab.get(getActivity()).updateCrime(position , crime);
-//               CrimeLab crimeLab = new CrimeLab(getContext());
-//               CrimeLab.getupdateCrime(position , crime);
             }
         }
     }
