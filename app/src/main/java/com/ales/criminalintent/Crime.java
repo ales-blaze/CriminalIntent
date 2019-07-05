@@ -1,5 +1,8 @@
 package com.ales.criminalintent;
 
+import android.support.v4.util.TimeUtils;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 

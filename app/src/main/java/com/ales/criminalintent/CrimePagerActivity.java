@@ -9,9 +9,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Button;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static com.ales.criminalintent.DatePickerFragment.*;
 
 public class CrimePagerActivity extends FragmentActivity {
     private static final String CRIME_ID = "com.ales.criminalintent.crime_id";
