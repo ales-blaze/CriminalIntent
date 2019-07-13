@@ -1,25 +1,40 @@
 package com.ales.criminalintent;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private final static int REQUEST_CRIME_CODE = 01;
+    private boolean mSubtitleVisible;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTitleTextView;
@@ -55,8 +70,7 @@ public class CrimeListFragment extends Fragment {
         if ( requestCode == REQUEST_CRIME_CODE ){
             if ( resultCode == Activity.RESULT_OK ){
                Crime crime = (Crime) data.getSerializableExtra(CrimeFragment.CRIME_OBJECT);
-               int position = data.getIntExtra(CrimeFragment.CRIME_POSITION , -1);
-               CrimeLab.get(getActivity()).updateCrime(position , crime);
+                CrimeLab.get(getActivity()).updateCrime(crime);
             }
         }
     }
@@ -79,12 +93,15 @@ public class CrimeListFragment extends Fragment {
         public void onBindViewHolder(@NonNull CrimeHolder crimeHolder, int i) {
             Crime crime = mCrimes.get(i);
             crimeHolder.bindCrime(crime);
-//            crimeHolder.mTitleTextView.setText(crime.getTitle());
         }
 
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+
+        public void setCrimes(List<Crime> list){
+            mCrimes = list;
         }
     }
 
@@ -99,20 +116,64 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateUI() {
-//        CrimeLab crimeLab = new CrimeLab(getActivity());
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
         if(mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         }else {
+//            mAdapter.mCrimes = CrimeLab.get(getContext()).getCrimes();
+            mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
         }
+        updateSubtitle();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         updateUI();
+        Log.d("CrimeListFragment" , " onResume() is called");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime_list_menu , menu);
+        MenuItem subtitle = menu.findItem(R.id.menu_item_show_subtitle);
+        if (mSubtitleVisible) {
+            subtitle.setTitle(R.string.hide_subtitle);
+        }else {
+            subtitle.setTitle(R.string.show_subtitle);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch ( item.getItemId() ) {
+            case R.id.crime_add_menu_item :
+                Crime crime = new Crime();
+                CrimeLab.get(getContext()).addCrime(crime);
+                Intent intent = CrimePagerActivity.newIntent(getContext() , crime.getId());
+                startActivity(intent);
+                return true;
+            case R.id.menu_item_show_subtitle :
+                mSubtitleVisible = !mSubtitleVisible;
+                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+                updateSubtitle();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void updateSubtitle(){
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        int crimeCount = crimeLab.getCrimes().size();
+        @SuppressLint("StringFormatMatches") String subtitle = getString(R.string.subtitle_format , crimeCount);
+        if ( !mSubtitleVisible ) {
+            subtitle = null;
+        }
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Objects.requireNonNull(activity).getSupportActionBar().setSubtitle(subtitle);
     }
 }

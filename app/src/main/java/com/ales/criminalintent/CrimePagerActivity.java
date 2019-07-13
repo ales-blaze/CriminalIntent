@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 import static com.ales.criminalintent.DatePickerFragment.*;
 
-public class CrimePagerActivity extends FragmentActivity {
+public class CrimePagerActivity extends AppCompatActivity {
     private static final String CRIME_ID = "com.ales.criminalintent.crime_id";
     private ViewPager mViewPager;
     private List<Crime> mCrimeList;
@@ -50,12 +51,17 @@ public class CrimePagerActivity extends FragmentActivity {
                 return CrimeFragment.newInstance(crime.getId());
             }
         });
-        //finding the position of particular crime in order to load it with viewpager , otherwise first crime will be loaded by default.
+
         for ( int i = 0 ; i < mCrimeList.size() ; i++) {
             if (crimeID.equals(mCrimeList.get(i).getId())) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }
