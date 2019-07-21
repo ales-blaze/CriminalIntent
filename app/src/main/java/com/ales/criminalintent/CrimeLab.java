@@ -15,7 +15,6 @@ import java.util.UUID;
 
 //this is a Singletone class
 public class CrimeLab {
-//    private List<Crime> mCrimes;
     private static CrimeLab sCrimeLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
@@ -87,6 +86,8 @@ public class CrimeLab {
         contentValues.put(CrimeTable.Cols.DATE , crime.getDate().getTime());
         contentValues.put(CrimeTable.Cols.UUID , crime.getId().toString());
         contentValues.put(CrimeTable.Cols.SOLVED , crime.isSolved());
+        contentValues.put(CrimeTable.Cols.SUSPECT , crime.getSuspect());
+        contentValues.put(CrimeTable.Cols.PHONE_NUMBER , crime.getCriminalNumber());
         return contentValues;
     }
 }

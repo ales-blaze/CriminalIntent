@@ -11,4 +11,20 @@
     <string name="hide_subtitle">Hide Subtitle</string>
     <string name="subtitle_format">%1$s crimes</string>
     <string name="delete_crime">Delete Crime</string>
+    <string name="select_culprit">Find Culprit</string>
+    <string name="send_crime_report_button">Send Crime Report</string>
+    <string name="crime_with_no_suspect">No Suspect for this Crime.</string>
+    <string name="crime_with_suspect">Suspect is %s.</string>
+    <string name="crime_is_solved">This Crime is Solved.</string>
+    <string name="crime_is_not_solved">This Crime is Not Solved.</string>
+    <string name="crime_report_subject">CriminalIntent Crime Report</string>
+    <string name="send_report_via">Send report via</string>
+    <string name="crime_report">%1$s !
+        %2$s
+        This Crime was discovered on :
+        %3$s
+        %4$s
+    </string>
+    <string name="crime_report_chooser_title">Select app to send report</string>
+    <string name="call_criminal">Call Criminal</string>
 </resources>
